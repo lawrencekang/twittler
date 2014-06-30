@@ -10,11 +10,18 @@
   width: 1000px;
   margin: 10px auto;
   }
+
+  #titles {
+  width: 1000px;
+  margin: 10px auto;
+  font-size: 1.25em;    
+  }
       
   h1 {
   font-family: "Helvetica Neue";
   }
       
+
   .tweet {
 
   padding: 8px 0;
@@ -45,15 +52,20 @@
 
   <body>
     <div id = "holder">
-      <div class = "tweet"> 
-        <div class = "user">Tweetled by:</div>
-          <div class = "message">Tweetl:</div>
-            <div class = "timestamp">Tweetled at:</div>
+      <div class = "user">Tweetled by:</div>
+        <div class = "message">Tweetl:</div>
+          <div class = "timestamp">Tweetled at:</div>
+      <div class = "tweet"> <div id = "titles"> </div></div> 
+      
+        <!-- <div class = "user"></div>
+          //<div class = "message"></div>
+            //<div class = "timestamp"></div> -->
 
   
     <script>
       $(document).ready(function(){
         var $holder = $('#holder');
+        var $titles = $('#titles');
         var tweetCount = 0;
 
 
@@ -69,7 +81,7 @@
             $user.text('@' + tweetObj.user);
             $timestamp.text('tweeted at ' + tweetObj.created_at)
             $message.text(tweetObj.message)
-            $tweet.appendTo($holder)
+            $tweet.prependTo($titles)
             $tweet.prepend($user, $message, $timestamp);
             tweetCount++
             console.log(index)
