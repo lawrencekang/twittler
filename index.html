@@ -11,7 +11,7 @@
   margin: 10px auto;
   }
 
-  #titles {
+  #content {
   width: 1000px;
   margin: 10px auto;
   font-size: 1.25em;    
@@ -27,7 +27,7 @@
   padding: 8px 0;
   position: relative;
   font-family: Helvetica Neue;
-  font-size: .7em;
+  font-size: .8em;
   }
 
   .user {
@@ -55,45 +55,61 @@
       <div class = "user">Tweetled by:</div>
         <div class = "message">Tweetl:</div>
           <div class = "timestamp">Tweetled at:</div>
-      <div class = "tweet"> <div id = "titles"> </div></div> 
-      
-        <!-- <div class = "user"></div>
-          //<div class = "message"></div>
-            //<div class = "timestamp"></div> -->
+    <div class = "tweet"> 
+      <div id = "content"> </div>
+    </div> 
 
-  
     <script>
       $(document).ready(function(){
         var $holder = $('#holder');
-        var $titles = $('#titles');
+        var $content = $('#content');
         var tweetCount = 0;
-
-
-        // show Tweets:
-        var showTweets = function(){
+        var showTweets = function(){ // show all Tweets:
           var index = streams.home.length-1
           for(var i=tweetCount; i<index; i++){
+
             var tweetObj = streams.home[i];
             var $tweet = $('<div class="tweet"></div>');
             var $user = $('<a href="#' + tweetObj.user + '"class = "user"> <div> </div> </a>');
             var $timestamp = $('<div class = "timestamp"> </div>')
             var $message = $('<div class = "message"></div>')
-            $user.text('@' + tweetObj.user);
-            $timestamp.text('tweeted at ' + tweetObj.created_at)
+            $user.text(tweetObj.user);
+            $timestamp.text('tweetled at ' + tweetObj.created_at)
             $message.text(tweetObj.message)
-            $tweet.prependTo($titles)
+            $tweet.prependTo($content)
             $tweet.prepend($user, $message, $timestamp);
             tweetCount++
-            console.log(index)
+          }    
 
-          }
-        };
-      showTweets();
-      setInterval(showTweets, 1500)
-      
-      });
+          $("a").on('click', function(){ // when a user name is clicked, use that name to display that user's tweets 
+            $("div#content").empty();
+            clearInterval(tweetInterval);
+            tweetCount = 0;
+            var userName = this.text;
+            var showUserTweets = function(name){
+              var index = streams.users[name].length-1;
+              for(var i=tweetCount; i<index; i++){
+                var tweetObj = streams.users[name][i];
+                var $tweet = $('<div class="tweet"></div>');
+                var $user = $('<a href="#' + tweetObj.user + '"class = "user"> <div> </div> </a>');
+                var $timestamp = $('<div class = "timestamp"> </div>');
+                var $message = $('<div class = "message"></div>');
+                $user.text(tweetObj.user);
+                $timestamp.text('tweeted at ' + tweetObj.created_at);
+                $message.text(tweetObj.message);
+                $tweet.prependTo($content);
+                $tweet.prepend($user, $message, $timestamp);
+                tweetCount++
+              }
+            }
+          showUserTweets(userName);
+          var userInterval = setInterval(function(){showUserTweets(userName)}, 3000);
+        });   
+      }
 
-
+    showTweets();      
+    var tweetInterval = setInterval(showTweets, 3000);
+});
       </script>
     </div>
   </body>
